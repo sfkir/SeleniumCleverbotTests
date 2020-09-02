@@ -29,7 +29,6 @@ public class MailingService {
                 .build();
     }
 
-
     public Map<Object, Object> createNewMail(String name) {
         Response apiResponse = given(requestSpecification)
                 .param("action", "new")
@@ -66,10 +65,14 @@ public class MailingService {
         return DatatypeConverter.printHexBinary(digest).toLowerCase();
     }
 
-    public Email[] getEmails(String email) throws NoSuchAlgorithmException {
+    public Email[] getEmails(String email) {
         int iterations = 5;
-        String hashedEmail = hashEmailToMd5(email);
-
+        String hashedEmail = "";
+        try {
+            hashedEmail = hashEmailToMd5(email);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         Email[] emailData = given(requestSpecification)
                 .get("/mail/id/" + hashedEmail + "/")
                 .getBody()
@@ -79,7 +82,7 @@ public class MailingService {
         return emailData;
     }
 
-    public List<String> getVerificationLink(String email) throws NoSuchAlgorithmException {
+    public List<String> getVerificationLink(String email) {
         Email[] emailContent = getEmails(email);
         ArrayList<String> links = new ArrayList();
         String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]";

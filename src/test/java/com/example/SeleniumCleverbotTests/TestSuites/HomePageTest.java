@@ -16,7 +16,7 @@ import static com.example.SeleniumCleverbotTests.Utils.FakeData.*;
 public class HomePageTest extends BaseTest {
 
     @Test
-    void signUpAndSendMessage() throws NoSuchAlgorithmException, InterruptedException {
+    void signUpAndSendMessage() {
         String username = generateRandomUsername();
         String fullName = generateRandomFullName();
         String password = "testPassword";
